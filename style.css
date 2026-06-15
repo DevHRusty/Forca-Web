@@ -28,6 +28,15 @@ h1 {
     margin-bottom: 30px;
 }
 
+#palavra-display span {
+    font-size: 32px;
+    font-weight: bold;
+    border-bottom: 3px solid white;
+    width: 30px;
+    text-align: center;
+    margin: 5px;
+}
+
 #palavra-display {
     display: flex;
     gap: 10px;
