@@ -39,17 +39,21 @@ function tentarLetra() {
     const ganhou = palavra.split("").every(letra => letrasUsadas.includes(letra));
     const perdeu = erros >= 7;
 
-    if (ganhou) {
-        document.getElementById("mensagem").textContent = "Parabéns! Você ganhou! 🎉";
-        document.getElementById("btn-reiniciar").style.display = "block";
+   if (ganhou) {
+    document.getElementById("mensagem").textContent = "Parabéns! Você ganhou! 🎉";
+    document.getElementById("btn-reiniciar").style.display = "block";
+    document.getElementById("letras").disabled = true;
+    document.getElementById("btn-tentar").disabled = true;
     }
 
     if (perdeu) {
-        document.getElementById("mensagem").textContent = "Você perdeu! A palavra era: " + palavra;
-        document.getElementById("btn-reiniciar").style.display = "block";
+    document.getElementById("mensagem").textContent = "Você perdeu! A palavra era: " + palavra;
+    document.getElementById("btn-reiniciar").style.display = "block";
+    document.getElementById("letras").disabled = true;
+    document.getElementById("btn-tentar").disabled = true;
+
     }
 }
-
 function desenharForca(erros) {
     const canvas = document.getElementById("Forca");
     const ctx = canvas.getContext("2d");
