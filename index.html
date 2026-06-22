@@ -1,39 +1,38 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Jogo da Forca </title>
+    <title>Jogo da Forca</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-    <h2> Jogo da Forca </h2>
+    <h2>Jogo da Forca</h2>
 
     <div id="forca-container">
-        <canvas id="Forca" width="200" height="220"></canvas>
+        <canvas id="forca" width="200" height="220"></canvas>
     </div>
-    
+
     <div id="palavra-display"></div>
 
     <div id="letras-erradas"></div>
 
     <div id="input-area">
-        <input type="texto" id="letras" maxlength="1" placeholder="Digite uma letra">
+        <input type="text" id="letras" maxlength="1" placeholder="Digite uma letra">
         <button id="btn-tentar">???</button>
     </div>
 
     <div id="mensagem"></div>
 
-    <button id="btn-reiniciar" style="display:none;" onclick="location.reload()">Jogar novamente 🔄</button>
+    <button id="btn-reiniciar" class="hidden" onclick="location.reload()">Jogar novamente 🔄</button>
 
     <script src="script.js"></script>
 
-<footer>
-    <p>Desenvolvido por <a href="https://github.com/DevHRusty" target="_blank">@DevHRusty</a></p>
-</footer>
+    <footer>
+        <p>Desenvolvido por <a href="https://github.com/DevHRusty" target="_blank">@DevHRusty</a></p>
+    </footer>
 
 </body>
 </html>

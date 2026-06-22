@@ -1,14 +1,37 @@
-const palavras = ["tecnologia","inovacao","computador","algoritmo","interface","firmware","criptografia","javascript","python","programacao"];
+// ===========================
+// Banco de palavras com acentos corretos
+// ===========================
+const palavras = [
+    "tecnologia", "inovação", "computador", "algoritmo",
+    "interface", "firmware", "criptografia", "javascript",
+    "python", "programação", "internet", "software",
+    "hardware", "database", "segurança", "servidor",
+    "navegador", "protocolo", "variavel", "funcao"
+];
 
+// Sorteia uma palavra aleatória do banco
 const palavra = palavras[Math.floor(Math.random() * palavras.length)];
 
-
+// Guarda referências dos elementos para não repetir getElementById
+const display = document.getElementById("palavra-display");
+const inputLetra = document.getElementById("letras");
+const btnTentar = document.getElementById("btn-tentar");
+const btnReiniciar = document.getElementById("btn-reiniciar");
+const mensagem = document.getElementById("mensagem");
+const letrasErradasDiv = document.getElementById("letras-erradas");
+const canvas = document.getElementById("forca");
 
 let letrasUsadas = [];
 let erros = 0;
 
+// Controla se o jogo ainda está ativo — impede ações após fim
+let jogoAtivo = true;
+
+// ===========================
+// Mostra a palavra na tela
+// _ para letras não descobertas
+// ===========================
 function mostrarPalavra() {
-    const display = document.getElementById("palavra-display");
     display.innerHTML = "";
 
     for (let letra of palavra) {
@@ -18,50 +41,81 @@ function mostrarPalavra() {
     }
 }
 
+// ===========================
+// Processa a tentativa do jogador
+// ===========================
 function tentarLetra() {
-    const input = document.getElementById("letras");
-    const letra = input.value.toLowerCase();
-    input.value = "";
+    // Bloqueia qualquer ação se o jogo terminou
+    if (!jogoAtivo) return;
 
-    if (!letra || letrasUsadas.includes(letra)) return;
+    const letra = inputLetra.value.toLowerCase();
+    inputLetra.value = "";
+
+    // Valida entrada — deve ser uma letra não usada ainda
+    if (!letra || letrasUsadas.includes(letra)) {
+        if (letrasUsadas.includes(letra)) {
+            mensagem.textContent = "Essa letra já foi tentada!";
+        }
+        return;
+    }
 
     letrasUsadas.push(letra);
 
+    // Verifica se a letra está na palavra
     if (!palavra.includes(letra)) {
         erros++;
     }
 
     mostrarPalavra();
-
     desenharForca(erros);
-    const letrasErradas = document.getElementById("letras-erradas");
-    letrasErradas.textContent = "letras erradas: " + letrasUsadas.filter(l => !palavra.includes(l)).join(" - ");
-    const ganhou = palavra.split("").every(letra => letrasUsadas.includes(letra));
+
+    // Atualiza letras erradas na tela
+    letrasErradasDiv.textContent = "Letras erradas: " +
+        letrasUsadas.filter(l => !palavra.includes(l)).join(" - ");
+
+    // Verifica condição de vitória
+    const ganhou = palavra.split("").every(l => letrasUsadas.includes(l));
+
+    // Verifica condição de derrota — máximo 7 erros
     const perdeu = erros >= 7;
 
-   if (ganhou) {
-    document.getElementById("mensagem").textContent = "Parabéns! Você ganhou! 🎉";
-    document.getElementById("btn-reiniciar").style.display = "block";
-    document.getElementById("letras").disabled = true;
-    document.getElementById("btn-tentar").disabled = true;
+    if (ganhou) {
+        mensagem.textContent = "Parabéns! Você ganhou! 🎉";
+        encerrarJogo();
     }
 
     if (perdeu) {
-    document.getElementById("mensagem").textContent = "Você perdeu! A palavra era: " + palavra;
-    document.getElementById("btn-reiniciar").style.display = "block";
-    document.getElementById("letras").disabled = true;
-    document.getElementById("btn-tentar").disabled = true;
-
+        mensagem.textContent = "Você perdeu! A palavra era: " + palavra;
+        encerrarJogo();
     }
 }
+
+// ===========================
+// Encerra o jogo corretamente
+// Bloqueia input, botão e mostra reiniciar
+// ===========================
+function encerrarJogo() {
+    jogoAtivo = false;
+    inputLetra.disabled = true;
+    btnTentar.disabled = true;
+
+    // Remove a classe hidden para mostrar o botão
+    btnReiniciar.classList.remove("hidden");
+}
+
+// ===========================
+// Desenha a forca no canvas
+// Cada parte aparece a cada erro
+// ===========================
 function desenharForca(erros) {
-    const canvas = document.getElementById("Forca");
     const ctx = canvas.getContext("2d");
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle ="white";
+    ctx.strokeStyle = "white";
     ctx.lineWidth = 3;
     ctx.lineCap = "round";
- ctx.beginPath();
+
+    // Estrutura da forca — sempre visível
+    ctx.beginPath();
     ctx.moveTo(10, 210); ctx.lineTo(190, 210); // base
     ctx.moveTo(50, 210); ctx.lineTo(50, 10);   // poste
     ctx.moveTo(50, 10);  ctx.lineTo(130, 10);  // topo
@@ -100,10 +154,15 @@ function desenharForca(erros) {
     }
 }
 
+// ===========================
+// Inicializa o jogo
+// ===========================
 mostrarPalavra();
 desenharForca(0);
 
-document.getElementById("letras").addEventListener("keydown", function(e) {
+// Enter também confirma a letra
+inputLetra.addEventListener("keydown", function(e) {
     if (e.key === "Enter") tentarLetra();
 });
-document.getElementById("btn-tentar").addEventListener("click", tentarLetra);
+
+btnTentar.addEventListener("click", tentarLetra);
