@@ -34,8 +34,8 @@ function tentarLetra() {
     mostrarPalavra();
 
     desenharForca(erros);
-    const letrasErradas = document.getElementById("letras erradas");
-    letrasErradas.textContent = "letras erradas" + letrasUsadas.filter(l => !palavra.includes(l)).join(" ");
+    const letrasErradas = document.getElementById("letras-erradas");
+    letrasErradas.textContent = "letras erradas: " + letrasUsadas.filter(l => !palavra.includes(l)).join(" - ");
     const ganhou = palavra.split("").every(letra => letrasUsadas.includes(letra));
     const perdeu = erros >= 7;
 
@@ -102,4 +102,4 @@ desenharForca(0);
 document.getElementById("letras").addEventListener("keydown", function(e) {
     if (e.key === "Enter") tentarLetra();
 });
-document.getElementById("botao de tentar").addEventListener("click", tentarLetra);
+document.getElementById("btn-tentar").addEventListener("click", tentarLetra);
